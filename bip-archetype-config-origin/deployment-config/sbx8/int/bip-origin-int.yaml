@@ -2,7 +2,7 @@
 apiVersion: flux.weave.works/v1beta1
 kind: HelmRelease #Custom Object type for use with Flux Helm Operator
 metadata:
-  name: bip-project-namespace-prefix/bip-origin-int #Name of the object
+  name: bip-origin-int #Name of the object
   namespace: origin-int #Namespace in which to install the Chart
   annotations:
     flux.weave.works/automated: "true" #Set this to true to automate installation/updating of this release when the Chart of this object changes
@@ -38,7 +38,7 @@ spec:
         hosts:
           - bip-origin.origin-int.sbx8.bip.va.gov
     image:
-      repository: container-registry.sbx8.bip.va.gov/bip-origin
+      repository: container-registry.sbx8.bip.va.gov/bip-project-namespace-prefix/bip-origin
       tag: 0.0.2-SNAPSHOT
     consul:
       enabled: true
