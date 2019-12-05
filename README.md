@@ -1,6 +1,10 @@
 # BIP Service Configuration Repository Archetype
 This repository serves as an archetype from which to create new service team configuration repositories.
 
+## Generating a Configuration Repository for a New Project
+Update the values in the gen.properties file and run gen.sh to create the configuration for your new project. 
+Look at the [Generating a New Project](https://github.com/department-of-veterans-affairs/bip-archetype-service#generating-a-new-project) 
+documentation for more details.
 
 ## Instructions on setting up branch permissions
 After creating the service team's configuration repository, follow these steps to apply branch permissions to the master branch:
