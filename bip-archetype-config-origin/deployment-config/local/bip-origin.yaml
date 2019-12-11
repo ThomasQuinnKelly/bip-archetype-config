@@ -24,7 +24,7 @@ spec:
   ########################################################################
   values:
     image:
-      repository: 172.30.1.1:5000/origin-dev/bip-project-namespace-prefix/bip-origin
+      repository: 172.30.1.1:5000/bip-project-namespace-prefix/bip-origin
       tag: latest
     vault:
       enabled: false
