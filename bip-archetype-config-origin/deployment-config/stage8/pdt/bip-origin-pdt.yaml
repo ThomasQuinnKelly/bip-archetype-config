@@ -1,0 +1,64 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease #Custom Object type for use with Flux Helm Operator
+metadata:
+  name: bip-origin-pdt #Name of the object
+  namespace: origin-ivv #Namespace in which to install the helmrelease object
+  annotations:
+    flux.weave.works/automated: "true" #Set this to true to automate installation/updating of this release when the Chart of this object changes
+    flux.weave.works/tag.chart-image: glob:pdt-* #Regex value flux will look for in image tag to auto upadte
+
+spec:
+  releaseName: bip-origin-pdt #Name of the Helm release
+  targetNamespace: origin-pdt #Namespace in which to deploy chart 
+
+  ########################################################################
+  # Values section defines the location of the chart
+  # This example pulls the chart from a Git repository
+  ########################################################################
+  chart:
+    git: ssh://git@github.ec.va.gov/EPMO/bip-origin-config #Repository where the pull the chart from
+    ref: staging #Branch or tag to retreive the chart from
+    path: charts/bip-origin #Path to the chart directory in the repository
+
+  ########################################################################
+  # Values section defines the parameters to the chart
+  # These are specific to the chart being installed
+  ########################################################################
+  values:
+    ingress:
+      enabled: true
+      hosts:
+        - bip-origin.origin-pdt.stage8.bip.va.gov
+      annotations:
+        # kubernetes.io/ingress.class: nginx
+        kubernetes.io/tls-acme: "true"
+      path: /
+      tls:
+      - secretName: bip-origin-pdt-tls
+        hosts:
+          - bip-origin.origin-pdt.stage8.bip.va.gov
+    image:
+      repository: container-registry.stage8.bip.va.gov/bip-project-namespace-prefix/bip-origin
+      tag: 0.0.2-SNAPSHOT
+    consul:
+      config:
+        enabled: true
+        prefix: config/origin/pdt
+      discovery:
+        enabled: true
+        register: true
+      secret: consul-acl-token
+      host: stage8-consul.vault.svc.stage8
+      scheme: http
+    vault:
+      enabled: true
+      host: stage8-vault.vault.svc.stage8
+      kubernetes:
+        role: origin-read
+      kv:
+        applicationName: origin/bip-origin
+      port: 8200
+      scheme: http
+    spring:
+      profiles: dev
